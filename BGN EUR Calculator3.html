@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ЛЕВА ⇄ ЕВРО Калкулатор</title>
+  <style>
+    :root {
+      --bg-light: #f0f0f0;
+      --text-light: #000;
+      --bg-dark: #1a1a1a;
+      --text-dark: #fff;
+      --display-bg: #ffffff;
+      --display-text: #000;
+      --danger: #ff4444;
+      --btn-border-dark: #888;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg-light); color: var(--text-light);
+      display: flex; justify-content: center; align-items: flex-start;
+      min-height: 100vh;
+    }
+    body.dark-mode {
+      background: var(--bg-dark); color: var(--text-dark);
+    }
+    .calculator-container {
+      margin-top: 20px;
+      width: 100%; max-width: 340px;
+      background: var(--bg-light);
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      border: 1px solid #000;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+    body.dark-mode .calculator-container {
+      background: #2d2d2d;
+      border: 1px solid #fff;
+    }
+    .header {
+      display: flex; align-items: center;
+      padding: 10px 15px;
+      background: #808080; color: white;
+      border-bottom: 1px solid #ddd;
+    }
+    .title { flex: 1; text-align: center; font-size: 18px; font-weight: bold; }
+    .window-controls { display: flex; gap: 8px; }
+    .control-btn {
+      width: 18px; height: 18px;
+      border-radius: 50%; border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: bold;
+    }
+    .minimize-btn { background: #ffcc00; }
+    .close-btn { background: var(--danger); color: white; }
+    .mode-toggle {
+      background: none; border: none; color: white; font-size: 20px;
+      cursor: pointer; margin-left: 10px;
+    }
+    .displays { display: flex; flex-direction: column; gap: 12px; padding: 15px; }
+    .display {
+      height: 60px; padding: 10px 15px;
+      font-size: 36px; font-weight: bold;
+      text-align: right;
+      background: var(--display-bg);
+      color: var(--display-text);
+      border: 2px solid #aaa; border-radius: 6px;
+      transition: 0.3s;
+    }
+    body.dark-mode .display {
+      background: var(--display-bg);
+      color: var(--display-text);
+      border: none;
+    }
+    .display.active {
+      outline: 5px solid var(--danger);
+    }
+    .keypad {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; padding: 10px 15px 15px;
+    }
+    .btn {
+      height: 60px; font-size: 28px; font-weight: bold;
+      background: #333; color: #fff;
+      border-radius: 5px; border: none;
+      cursor: pointer; transition: 0.2s;
+    }
+    body.dark-mode .btn {
+      border: 1px solid var(--btn-border-dark);
+    }
+    .btn:active { transform: scale(0.95); opacity: 0.9; }
+    .clear-btn { background: var(--danger); color: #fff; }
+    .footer {
+      text-align: right; padding: 5px 15px 10px;
+      font-size: 14px; font-weight: bold; font-style: italic;
+      color: rgba(0,0,0,0.5); position: relative; right: 5px;
+    }
+    body.dark-mode .footer {
+      color: rgba(255,255,255,0.7);
+    }
+    @media (max-width: 480px) {
+      html, body {
+        height: 100vh; margin: 0; padding: 0; overflow: hidden;
+      }
+      .calculator-container {
+        position: fixed; top: 0; left: 0; width: 100vw;
+        border-radius: 0; z-index: 9999;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-container">
+    <div class="header">
+      <div class="window-controls">
+        <button class="control-btn minimize-btn">–</button>
+        <button class="control-btn close-btn">×</button>
+      </div>
+      <div class="title">ЛЕВА ⇄ ЕВРО Калкулатор</div>
+      <button class="mode-toggle" id="modeToggle">☀️</button>
+    </div>
+    <div class="displays">
+      <input type="text" class="display active" id="bgnDisplay" value="лв" readonly>
+      <input type="text" class="display" id="eurDisplay" value="€" readonly>
+    </div>
+    <div class="keypad">
+      <button class="btn" onclick="addDigit('1')">1</button>
+      <button class="btn" onclick="addDigit('2')">2</button>
+      <button class="btn" onclick="addDigit('3')">3</button>
+      <button class="btn" onclick="addDigit('4')">4</button>
+      <button class="btn" onclick="addDigit('5')">5</button>
+      <button class="btn" onclick="addDigit('6')">6</button>
+      <button class="btn" onclick="addDigit('7')">7</button>
+      <button class="btn" onclick="addDigit('8')">8</button>
+      <button class="btn" onclick="addDigit('9')">9</button>
+      <button class="btn clear-btn" onclick="deleteDigit()">⌫</button>
+      <button class="btn" onclick="addDigit('0')">0</button>
+      <button class="btn" onclick="addDecimal()">.</button>
+    </div>
+    <div class="footer">MAG‑DJ®</div>
+  </div>
+  <script>
+    const BGN_TO_EUR = 1.95583;
+    let activeDisplay = 'bgn';
+    let isDarkMode = false;
+
+    const bgnDisplay = document.getElementById('bgnDisplay');
+    const eurDisplay = document.getElementById('eurDisplay');
+    const modeToggle = document.getElementById('modeToggle');
+
+    document.querySelector('.close-btn').addEventListener('click', () => window.close());
+    document.querySelector('.minimize-btn').addEventListener('click', () => {
+      const container = document.querySelector('.calculator-container');
+      container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    });
+
+    modeToggle.addEventListener('click', toggleDarkMode);
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      isDarkMode = document.body.classList.contains('dark-mode');
+      modeToggle.textContent = isDarkMode ? '🌙' : '☀️';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key >= '0' && e.key <= '9') addDigit(e.key);
+      else if (e.key === '.' || e.key === ',') addDecimal();
+      else if (e.key === 'Backspace') deleteDigit();
+      else if (e.key === 'Enter') clearDisplays();
+      else if (e.key === 'ArrowUp') setActiveDisplay('bgn');
+      else if (e.key === 'ArrowDown') setActiveDisplay('eur');
+      else if (e.key === 'Escape') window.close();
+      else if (e.key === '-' || e.key === '_') document.querySelector('.minimize-btn').click();
+      else if (e.key === 'Shift') toggleDarkMode();
+    });
+
+    bgnDisplay.addEventListener('click', () => setActiveDisplay('bgn'));
+    eurDisplay.addEventListener('click', () => setActiveDisplay('eur'));
+
+    function addDigit(d) {
+      const display = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
+      let val = display.value.replace(/[^\d.]/g, '');
+      if (val === '0') val = '';
+      val += d;
+      display.value = val + (activeDisplay === 'bgn' ? 'лв' : '€');
+      convert();
+    }
+
+    function addDecimal() {
+      const display = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
+      let val = display.value.replace(/[^\d.]/g, '');
+      if (!val.includes('.')) {
+        val += '.';
+        display.value = val + (activeDisplay === 'bgn' ? 'лв' : '€');
+        convert();
+      }
+    }
+
+    function deleteDigit() {
+      const display = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
+      let val = display.value.replace(/[^\d.]/g, '');
+      val = val.slice(0, -1);
+      display.value = (val || '') + (activeDisplay === 'bgn' ? 'лв' : '€');
+      convert();
+    }
+
+    function clearDisplays() {
+      bgnDisplay.value = 'лв';
+      eurDisplay.value = '€';
+    }
+
+    function convert() {
+      let from = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
+      let to = activeDisplay === 'bgn' ? eurDisplay : bgnDisplay;
+      let val = parseFloat(from.value.replace(/[^\d.]/g, '')) || 0;
+      let converted = activeDisplay === 'bgn' ? (val / BGN_TO_EUR).toFixed(2) : (val * BGN_TO_EUR).toFixed(2);
+      to.value = converted + (activeDisplay === 'bgn' ? '€' : 'лв');
+    }
+
+    function setActiveDisplay(d) {
+      activeDisplay = d;
+      bgnDisplay.classList.toggle('active', d === 'bgn');
+      eurDisplay.classList.toggle('active', d === 'eur');
+      clearDisplays();
+    }
+
+    // При зареждане – проверка за dark mode
+    if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
+  </script>
+</body>
+</html>
