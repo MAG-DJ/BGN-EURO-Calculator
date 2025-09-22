@@ -1,2 +1,2 @@
-# BGN-EURO-Calculator-
+# BGN-EURO-Calculator
 „Безплатен калкулатор лева/евро за всеки“.
