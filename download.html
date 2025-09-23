@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изтегли калкулатора</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            text-align: center; 
+            padding: 20px; 
+            margin: 0;
+            background: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            font-size: 24px; 
+            margin-bottom: 10px;
+            color: #333;
+        }
+        p { 
+            font-size: 18px; 
+            margin-bottom: 30px;
+            color: #666;
+        }
+        .download-btn { 
+            background: #28a745; 
+            color: white; 
+            padding: 15px 30px; 
+            font-size: 20px; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            h1 { font-size: 20px; }
+            p { font-size: 16px; }
+            .download-btn { font-size: 18px; padding: 12px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📥 Изтегли калкулатора</h1>
+        <p>Кликни бутона по-долу за да изтеглиш файла:</p>
+        <a href="BGN-EURO-Calculator.html" download class="download-btn">
+            Изтегли Калкулатор-Лева-Евро
+        </a>
+    </div>
+</body>
+</html>
