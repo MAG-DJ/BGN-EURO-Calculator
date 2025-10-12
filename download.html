@@ -3,63 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Изтегли калкулатора</title>
+    <title>Изтегли Калкулатора</title>
     <style>
-        body { 
+        body {
             font-family: Arial, sans-serif;
-            text-align: center; 
-            padding: 20px; 
-            margin: 0;
-            background: #f0f0f0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
-            background: white;
-            padding: 30px;
+            padding: 20px;
+            background: #f0f0f0;
+            text-align: center;
+        }
+        .button {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 { 
-            font-size: 24px; 
-            margin-bottom: 10px;
-            color: #333;
-        }
-        p { 
-            font-size: 18px; 
-            margin-bottom: 30px;
-            color: #666;
-        }
-        .download-btn { 
-            background: #28a745; 
-            color: white; 
-            padding: 15px 30px; 
-            font-size: 20px; 
-            border: none; 
-            border-radius: 10px; 
             cursor: pointer;
+            margin: 30px 0;
+            display: block;
             text-decoration: none;
-            display: inline-block;
         }
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            h1 { font-size: 20px; }
-            p { font-size: 16px; }
-            .download-btn { font-size: 18px; padding: 12px 25px; }
+        .info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📥 Изтегли калкулатора</h1>
-        <p>Кликни бутона по-долу за да изтеглиш файла:</p>
-        <a href="BGN-EURO Calculator.html" download class="download-btn">
-            Изтегли Калкулатор Лева-Евро
-        </a>
+    <h1>🧮 Изтегли Калкулатора</h1>
+    
+    <div class="info">
+        <p><strong>Безплатен калкулатор за лева и евро</strong></p>
+        <p>✅ Работи без интернет<br>
+           ✅ Без реклами<br>
+           ✅ Не събира лични данни</p>
+    </div>
+
+    <a href="BGN-EURO Calculator.html" download class="button">
+        🟢 ИЗТЕГЛИ КАЛКУЛАТОРА
+    </a>
+
+    <div class="info">
+        <p><strong>След изтеглянето:</strong><br>
+        - Намерете файла в "Изтегляния"<br>
+        - Отворете го и следвайте инструкциите</p>
     </div>
 </body>
 </html>
