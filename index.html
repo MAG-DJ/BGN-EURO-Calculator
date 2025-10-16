@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ЛЕВА ⇄ ЕВРО Калкулатор</title>
 
   <!-- Favicon за браузър -->
   <link rel="icon" type="image/png" href="favicon.png">
@@ -10,10 +11,11 @@
   <!-- Manifest за PWA и икона на начален екран -->
   <link rel="manifest" href="manifest.json">
 
-  <!-- За iPhone / Apple устройства -->
+  <!-- За Android и iPhone -->
+  <meta name="theme-color" content="#28a745">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="favicon.png">
-
-  <title>ЛЕВА ⇄ ЕВРО Калкулатор</title>
 
   <style>
     :root {
@@ -30,7 +32,8 @@
     body {
       margin: 0; padding: 0;
       font-family: Arial, sans-serif;
-      background: var(--bg-light); color: var(--text-light);
+      background: var(--bg-light);
+      color: var(--text-light);
       display: flex; justify-content: center; align-items: flex-start;
       min-height: 100vh;
       overflow: hidden;
@@ -39,7 +42,6 @@
 
     .calculator-container {
       margin-top: 10px;
-      margin-left: auto; margin-right: auto;
       width: 100%; max-width: 340px;
       background: var(--bg-light);
       border-radius: 8px;
@@ -47,61 +49,125 @@
       border: 1px solid #000;
       overflow: hidden;
       position: relative;
-      transition: 0.3s;
     }
     body.dark-mode .calculator-container {
-      background: #2d2d2d; border: 1px solid #fff;
+      background: #2d2d2d;
+      border: 1px solid #fff;
     }
 
-    .header { height: 50px; background: #808080; color: white; border-bottom: 1px solid #ddd; position: relative; }
+    .header {
+      height: 50px;
+      background: #808080; color: white;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+    }
 
     .close-btn {
-      background: var(--danger); width: 28px; height: 28px; font-size: 2em; color: yellow;
-      border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%);
-      left: 10px; display: flex; align-items: center; justify-content: center;
-      z-index: 10; cursor: pointer; border: none;
+      background: var(--danger);
+      width: 28px; height: 28px;
+      font-size: 2em; color: yellow;
+      border-radius: 50%;
+      position: absolute; top: 50%; left: 10px;
+      transform: translateY(-50%);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border: none;
     }
 
     .mode-toggle {
-      background: none; border: none; color: white; font-size: 1.6em; cursor: pointer;
-      position: absolute; top: 50%; transform: translateY(-50%); right: 10px; z-index: 1002;
+      background: none; border: none; color: white;
+      font-size: 1.6em; cursor: pointer;
+      position: absolute; top: 50%; right: 10px;
+      transform: translateY(-50%);
+      z-index: 1002;
     }
 
-    .title { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      font-size: 18px; font-weight: bold; text-align: center; pointer-events: none; }
+    .title {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px; font-weight: bold;
+      text-align: center;
+      pointer-events: none;
+    }
 
-    .displays { display: flex; flex-direction: column; gap: 12px; padding: 15px; }
+    .displays {
+      display: flex; flex-direction: column; gap: 12px; padding: 15px;
+    }
 
     .display {
-      height: 60px; padding: 10px 15px; font-size: 36px; font-weight: bold;
-      text-align: right; background: var(--display-bg); color: var(--display-text);
-      border: 2px solid #aaa; border-radius: 6px; transition: 0.3s;
+      height: 60px; padding: 10px 15px;
+      font-size: 36px; font-weight: bold;
+      text-align: right;
+      background: var(--display-bg);
+      color: var(--display-text);
+      border: 2px solid #aaa; border-radius: 6px;
+      transition: 0.3s;
     }
-    body.dark-mode .display { background: var(--display-bg); color: var(--display-text); border: none; }
+    body.dark-mode .display {
+      background: var(--display-bg);
+      color: var(--display-text);
+      border: none;
+    }
     .display.active { outline: 5px solid var(--danger); }
 
-    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px 15px 40px; }
-    .btn { height: 60px; font-size: 28px; font-weight: bold; background: #333; color: #fff; border-radius: 5px; border: none; cursor: pointer; transition: 0.2s; }
+    .keypad {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; padding: 10px 15px 40px;
+    }
+    .btn {
+      height: 60px; font-size: 28px; font-weight: bold;
+      background: #333; color: #fff;
+      border-radius: 5px; border: none;
+      cursor: pointer; transition: 0.2s;
+    }
     body.dark-mode .btn { border: 1px solid var(--btn-border-dark); }
     .btn:active { transform: scale(0.95); opacity: 0.9; }
     .clear-btn { background: var(--danger); color: #fff; }
 
-    .footer { text-align: right; padding: 4px 15px 6px; font-size: 14px; font-weight: bold; font-style: italic; color: rgba(0,0,0,0.5); position: relative; right: 5px; }
+    .footer {
+      text-align: right; padding: 4px 15px 6px;
+      font-size: 14px; font-weight: bold; font-style: italic;
+      color: rgba(0,0,0,0.5); position: relative; right: 5px;
+    }
     body.dark-mode .footer { color: rgba(255,255,255,0.7); }
 
-    #infoBtn { position: absolute; bottom: 22px; left: 15px; width: 100px; height: 35px; background: #28a745; color: white; border: 2px solid #1e7e34; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; z-index: 1000; font-family: Arial; }
-
-    #infoWindow {
-      display: none; position: absolute; top: 70px; left: 15px; width: 285px; max-height: 420px;
-      background: var(--display-bg); color: var(--display-text); border: 2px solid #aaa;
-      border-radius: 10px; padding: 12px; font-size: 14px; line-height: 1.4; overflow-y: auto; z-index: 1001; box-shadow: 0 0 20px rgba(0,0,0,0.3); font-family: Arial;
+    /* Инфо прозорец */
+    #infoBtn {
+      position: absolute; bottom: 22px; left: 15px;
+      width: 100px; height: 35px;
+      background: #28a745; color: white;
+      border: 2px solid #1e7e34; border-radius: 8px;
+      font-weight: bold; font-size: 16px;
+      cursor: pointer; z-index: 1000; font-family: Arial;
     }
 
-    .dark-mode #infoWindow { background: var(--bg-dark); color: var(--text-dark); border-color: #666; }
+    #infoWindow {
+      display: none; position: absolute; top: 70px; left: 15px;
+      width: 285px; max-height: 420px;
+      background: var(--display-bg); color: var(--display-text);
+      border: 2px solid #aaa; border-radius: 10px;
+      padding: 12px; font-size: 14px; line-height: 1.4;
+      overflow-y: auto; z-index: 1001; box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      font-family: Arial;
+    }
+    body.dark-mode #infoWindow {
+      background: var(--bg-dark); color: var(--text-dark); border-color: #666;
+    }
+
+    #infoWindow::-webkit-scrollbar { width: 6px; }
+    #infoWindow::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
+    #infoWindow::-webkit-scrollbar-thumb { background: #888; border-radius: 3px; }
+    #infoWindow::-webkit-scrollbar-thumb:hover { background: #555; }
+    body.dark-mode #infoWindow::-webkit-scrollbar-track { background: #333; }
+    body.dark-mode #infoWindow::-webkit-scrollbar-thumb { background: #666; }
+    body.dark-mode #infoWindow::-webkit-scrollbar-thumb:hover { background: #888; }
 
     @media (max-width: 480px) {
       html, body { height: 100vh; margin: 0; padding: 0; overflow: hidden; }
-      .calculator-container { position: fixed; top: 5px; left: 5px; width: calc(100vw - 10px); border-radius: 8px; z-index: 9999; }
+      .calculator-container {
+        position: fixed; top: 5px; left: 5px;
+        width: calc(100vw - 10px);
+        border-radius: 8px; z-index: 9999;
+      }
       #infoWindow { width: calc(100vw - 45px); left: 15px; }
     }
   </style>
@@ -137,8 +203,18 @@
     <button id="infoBtn">ИНФО</button>
 
     <div id="infoWindow">
-      <!-- Съдържание на ИНФО прозореца -->
-      ...
+      <div style="text-align: center; font-weight: bold; margin-bottom: 12px; font-size: 18px;">УПЪТВАНЕ</div>
+      <div style="margin-bottom: 10px;">
+        ✓ Изберете светъл 🌞 или тъмен 🌙 режим от бутона вдясно над горния дисплей.<br><br>
+        ✓ Изберете левов или евров дисплей.<br><br>
+        ✓ Активен е този дисплей, чиято рамка е оцветена в червено.<br><br>
+        ✓ При избор на дисплей калкулаторът се нулира.<br><br>
+        ✓ Въведете сумата – изчисляването става автоматично.<br><br>
+        ✓ Ако въвеждате сума в левове и стотинки, въведете точка преди стотинките.<br>
+        &nbsp;&nbsp;&nbsp;<strong>Пример:</strong> 25.45 лв → лева, точка, стотинки<br>
+        &nbsp;&nbsp;&nbsp;<strong>Пример:</strong> 25.45 € → евро, точка, евроцентове<br><br>
+        ✓ Бутонът със стрелка изтрива последната въведена цифра.
+      </div>
     </div>
 
     <div class="footer">MAG‑DJ®</div>
@@ -158,16 +234,31 @@
     const infoWindow = document.getElementById('infoWindow');
 
     closeBtn.addEventListener('click', () => window.close());
-    modeToggle.addEventListener('click', e => { e.stopPropagation(); toggleDarkMode(); });
-    bgnDisplay.addEventListener('click', () => setActiveDisplay('bgn'));
-    eurDisplay.addEventListener('click', () => setActiveDisplay('eur'));
-    infoBtn.addEventListener('click', toggleInfo);
+    modeToggle.addEventListener('click', (e) => { e.stopPropagation(); toggleDarkMode(); });
 
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
       isDarkMode = document.body.classList.contains('dark-mode');
       modeToggle.textContent = isDarkMode ? '🌙' : '☀️';
     }
+
+    document.addEventListener('keydown', (e) => {
+      if (isInfoOpen) {
+        if (e.key === 'ArrowUp') { infoWindow.scrollBy(0, -30); e.preventDefault(); return; }
+        if (e.key === 'ArrowDown') { infoWindow.scrollBy(0, 30); e.preventDefault(); return; }
+      }
+      if (e.key >= '0' && e.key <= '9') addDigit(e.key);
+      else if (e.key === '.' || e.key === ',') addDecimal();
+      else if (e.key === 'Backspace') deleteDigit();
+      else if (e.key === 'Enter') { toggleInfo(); e.preventDefault(); }
+      else if (e.key === 'ArrowUp') setActiveDisplay('bgn');
+      else if (e.key === 'ArrowDown') setActiveDisplay('eur');
+      else if (e.key === 'Escape') window.close();
+      else if (e.key === 'Shift') toggleDarkMode();
+    });
+
+    bgnDisplay.addEventListener('click', () => setActiveDisplay('bgn'));
+    eurDisplay.addEventListener('click', () => setActiveDisplay('eur'));
 
     function addDigit(d) {
       const display = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
@@ -181,7 +272,9 @@
     function addDecimal() {
       const display = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
       let val = display.value.replace(/[^\d.]/g, '');
-      if (!val.includes('.')) { val += '.'; display.value = val + (activeDisplay === 'bgn' ? 'лв' : '€'); convert(); }
+      if (!val.includes('.')) val += '.';
+      display.value = val + (activeDisplay === 'bgn' ? 'лв' : '€');
+      convert();
     }
 
     function deleteDigit() {
@@ -192,7 +285,10 @@
       convert();
     }
 
-    function clearDisplays() { bgnDisplay.value = 'лв'; eurDisplay.value = '€'; }
+    function clearDisplays() {
+      bgnDisplay.value = 'лв';
+      eurDisplay.value = '€';
+    }
 
     function convert() {
       let from = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
@@ -225,30 +321,18 @@
       }
     }
 
-    document.addEventListener('keydown', e => {
-      if (isInfoOpen) {
-        if (e.key === 'ArrowUp') { infoWindow.scrollBy(0, -30); e.preventDefault(); return; }
-        if (e.key === 'ArrowDown') { infoWindow.scrollBy(0, 30); e.preventDefault(); return; }
-      }
-      if (e.key >= '0' && e.key <= '9') addDigit(e.key);
-      else if (e.key === '.' || e.key === ',') addDecimal();
-      else if (e.key === 'Backspace') deleteDigit();
-      else if (e.key === 'Enter') { toggleInfo(); e.preventDefault(); }
-      else if (e.key === 'ArrowUp') setActiveDisplay('bgn');
-      else if (e.key === 'ArrowDown') setActiveDisplay('eur');
-      else if (e.key === 'Escape') window.close();
-      else if (e.key === 'Shift') toggleDarkMode();
+    infoBtn.addEventListener('click', toggleInfo);
+    document.addEventListener('click', (e) => {
+      if (e.target !== infoBtn && !infoWindow.contains(e.target) && e.target !== modeToggle) toggleInfoOff();
     });
 
-    document.addEventListener('click', e => {
-      if (e.target !== infoBtn && !infoWindow.contains(e.target) && e.target !== modeToggle) {
-        infoWindow.style.display = 'none';
-        infoBtn.textContent = 'ИНФО';
-        infoBtn.style.background = '#28a745';
-        infoBtn.style.borderColor = '#1e7e34';
-        isInfoOpen = false;
-      }
-    });
+    function toggleInfoOff() {
+      infoWindow.style.display = 'none';
+      infoBtn.textContent = 'ИНФО';
+      infoBtn.style.background = '#28a745';
+      infoBtn.style.borderColor = '#1e7e34';
+      isInfoOpen = false;
+    }
 
     if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
   </script>
