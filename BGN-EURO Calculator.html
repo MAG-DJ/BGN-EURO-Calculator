@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>ЛЕВА ⇄ ЕВРО Калкулатор</title>
+  <style>
+    :root {
+      --bg-light: #f0f0f0;
+      --text-light: #000;
+      --bg-dark: #1a1a1a;
+      --text-dark: #fff;
+      --display-bg: #ffffff;
+      --display-text: #000;
+      --danger: #ff4444;
+      --btn-border-dark: #888;
+    }
+
+    body {
+      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg-light); color: var(--text-light);
+      display: flex; justify-content: center; align-items: flex-start;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    body.dark-mode {
+      background: var(--bg-dark); color: var(--text-dark);
+    }
+
+    .calculator-container {
+      margin-top: 10px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%; max-width: 340px;
+      background: var(--bg-light);
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      border: 1px solid #000;
+      overflow: hidden;
+      position: relative;
+      transition: 0.3s;
+    }
+    body.dark-mode .calculator-container {
+      background: #2d2d2d;
+      border: 1px solid #fff;
+    }
+
+    .header {
+      height: 50px;
+      background: #808080; color: white;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+    }
+
+    .close-btn {
+      background: var(--danger);
+      width: 28px;
+      height: 28px;
+      font-size: 2em;
+      color: yellow;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      cursor: pointer;
+      border: none;
+    }
+
+    .mode-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.6em;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 10px;
+      z-index: 1002;
+    }
+
+    .title {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .displays {
+      display: flex; flex-direction: column; gap: 12px; padding: 15px;
+    }
+
+    .display {
+      height: 60px; padding: 10px 15px;
+      font-size: 36px; font-weight: bold;
+      text-align: right;
+      background: var(--display-bg);
+      color: var(--display-text);
+      border: 2px solid #aaa; border-radius: 6px;
+      transition: 0.3s;
+    }
+    body.dark-mode .display {
+      background: var(--display-bg);
+      color: var(--display-text);
+      border: none;
+    }
+    .display.active {
+      outline: 5px solid var(--danger);
+    }
+
+    .keypad {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; padding: 10px 15px 40px;
+    }
+    .btn {
+      height: 60px; font-size: 28px; font-weight: bold;
+      background: #333; color: #fff;
+      border-radius: 5px; border: none;
+      cursor: pointer; transition: 0.2s;
+    }
+    body.dark-mode .btn {
+      border: 1px solid var(--btn-border-dark);
+    }
+    .btn:active { transform: scale(0.95); opacity: 0.9; }
+    .clear-btn { background: var(--danger); color: #fff; }
+
+    .footer {
+      text-align: right; padding: 4px 15px 6px;
+      font-size: 14px; font-weight: bold; font-style: italic;
+      color: rgba(0,0,0,0.5); position: relative; right: 5px;
+    }
+    body.dark-mode .footer {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Стилове за инфо прозореца */
+    #infoBtn {
+      position: absolute;
+      bottom: 22px;
+      left: 15px;
+      width: 100px;
+      height: 35px;
+      background: #28a745;
+      color: white;
+      border: 2px solid #1e7e34;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 1000;
+      font-family: Arial;
+    }
+
+    #infoWindow {
+      display: none;
+      position: absolute;
+      top: 70px;
+      left: 15px;
+      width: 285px;
+      max-height: 420px;
+      background: var(--display-bg);
+      color: var(--display-text);
+      border: 2px solid #aaa;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      overflow-y: auto;
+      z-index: 1001;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      font-family: Arial;
+    }
+
+    .dark-mode #infoWindow {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      border-color: #666;
+    }
+
+    /* Стил за скролбар */
+    #infoWindow::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #infoWindow::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+
+    #infoWindow::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 3px;
+    }
+
+    #infoWindow::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    .dark-mode #infoWindow::-webkit-scrollbar-track {
+      background: #333;
+    }
+
+    .dark-mode #infoWindow::-webkit-scrollbar-thumb {
+      background: #666;
+    }
+
+    .dark-mode #infoWindow::-webkit-scrollbar-thumb:hover {
+      background: #888;
+    }
+
+    @media (max-width: 480px) {
+      html, body {
+        height: 100vh; margin: 0; padding: 0; overflow: hidden;
+      }
+      .calculator-container {
+        position: fixed; 
+        top: 5px; /* ПРОМЕНЕНО: от 0 на 5px */
+        left: 5px; /* ПРОМЕНЕНО: от 0 на 5px */
+        width: calc(100vw - 10px); /* ПРОМЕНЕНО: оставяме 5px отляво и отдясно */
+        border-radius: 8px; /* ПРОМЕНЕНО: връщаме радиус */
+        z-index: 9999;
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+      }
+      #infoWindow {
+        width: calc(100vw - 45px);
+        left: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-container">
+    <div class="header">
+      <button class="close-btn">×</button>
+      <div class="title">ЛЕВА ⇄ ЕВРО Калкулатор</div>
+      <button class="mode-toggle" id="modeToggle">☀️</button>
+    </div>
+
+    <div class="displays">
+      <input type="text" class="display active" id="bgnDisplay" value="лв" readonly>
+      <input type="text" class="display" id="eurDisplay" value="€" readonly>
+    </div>
+
+    <div class="keypad">
+      <button class="btn" onclick="addDigit('1')">1</button>
+      <button class="btn" onclick="addDigit('2')">2</button>
+      <button class="btn" onclick="addDigit('3')">3</button>
+      <button class="btn" onclick="addDigit('4')">4</button>
+      <button class="btn" onclick="addDigit('5')">5</button>
+      <button class="btn" onclick="addDigit('6')">6</button>
+      <button class="btn" onclick="addDigit('7')">7</button>
+      <button class="btn" onclick="addDigit('8')">8</button>
+      <button class="btn" onclick="addDigit('9')">9</button>
+      <button class="btn clear-btn" onclick="deleteDigit()">⌫</button>
+      <button class="btn" onclick="addDigit('0')">0</button>
+      <button class="btn" onclick="addDecimal()">.</button>
+    </div>
+
+    <button id="infoBtn">ИНФО</button>
+
+    <div id="infoWindow">
+      <div style="text-align: center; font-weight: bold; margin-bottom: 12px; font-size: 18px;">УПЪТВАНЕ</div>
+      
+      <div style="margin-bottom: 10px;">
+        ✓ Изберете светъл 🌞 или тъмен 🌙 режим от бутона вдясно над горния дисплей.<br><br>
+        ✓ Изберете левов или евров дисплей.<br><br>
+        ✓ Активен е този дисплей, чиято рамка (периферия) е оцветена в червено.<br><br>
+        ✓ При избор на дисплей калкулаторът се нулира.<br><br>
+        ✓ Въведете сумата – изчисляването става автоматично.<br><br>
+        ✓ Ако въвеждате сума в левове и стотинки, въведете точка преди стотинките.<br>
+        &nbsp;&nbsp;&nbsp;<strong>Пример:</strong> 25.45 лв → лева, точка, стотинки<br>
+        &nbsp;&nbsp;&nbsp;<strong>Пример:</strong> 25.45 € → евро, точка, евроцентове<br><br>
+        ✓ Бутонът със стрелка изтрива последната въведена цифра.
+      </div>
+
+      <hr style="margin: 12px 0; border: 0.5px solid #ccc;">
+
+      <div style="text-align: center;">
+        <div style="font-weight: bold; font-size: 16px;">💻 Компютър</div>
+        <div style="font-weight: bold; margin-bottom: 8px; font-size: 15px;">Клавишни комбинации</div>
+        
+        <div style="font-size: 13px; text-align: left; line-height: 1.5;">
+          • <strong>Цифри 0–9</strong> – Въвеждат сумата<br>
+          • <strong>Backspace</strong> – Изтрива последната въведена цифра<br>
+          • <strong>∧  ∨</strong> – Сменят/избират дисплей – лв или € и нулират калкулатора - (в режим „Инфо" служат за скролване)<br>
+          • <strong>Esc</strong> – Затваря калкулатора<br>
+          • <strong>Shift</strong> – Превключва между светъл и тъмен режим<br>
+          • <strong>Enter</strong> – Отваря и затваря ИНФО бутон<br>
+          • <strong>Точка <span style="font-size: 16px;">(.)</span></strong> – Използва се преди въвеждане на стотинки или евроцентове<br>
+          • <strong>Калкулатора може да се управлява и с мишка</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">MAG‑DJ®</div>
+  </div>
+
+  <script>
+    const BGN_TO_EUR = 1.95583;
+    let activeDisplay = 'bgn';
+    let isDarkMode = false;
+    let isInfoOpen = false;
+
+    const bgnDisplay = document.getElementById('bgnDisplay');
+    const eurDisplay = document.getElementById('eurDisplay');
+    const modeToggle = document.getElementById('modeToggle');
+    const closeBtn = document.querySelector('.close-btn');
+    const infoBtn = document.getElementById('infoBtn');
+    const infoWindow = document.getElementById('infoWindow');
+
+    closeBtn.addEventListener('click', () => window.close());
+    
+    modeToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleDarkMode();
+    });
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      isDarkMode = document.body.classList.contains('dark-mode');
+      modeToggle.textContent = isDarkMode ? '🌙' : '☀️';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (isInfoOpen) {
+        if (e.key === 'ArrowUp') {
+          infoWindow.scrollBy(0, -30);
+          e.preventDefault();
+          return;
+        } else if (e.key === 'ArrowDown') {
+          infoWindow.scrollBy(0, 30);
+          e.preventDefault();
+          return;
+        }
+      }
+      
+      if (e.key >= '0' && e.key <= '9') addDigit(e.key);
+      else if (e.key === '.' || e.key === ',') addDecimal();
+      else if (e.key === 'Backspace') deleteDigit();
+      else if (e.key === 'Enter') {
+        toggleInfo();
+        e.preventDefault();
+      }
+      else if (e.key === 'ArrowUp') setActiveDisplay('bgn');
+      else if (e.key === 'ArrowDown') setActiveDisplay('eur');
+      else if (e.key === 'Escape') window.close();
+      else if (e.key === 'Shift') toggleDarkMode();
+    });
+
+    bgnDisplay.addEventListener('click', () => setActiveDisplay('bgn'));
+    eurDisplay.addEventListener('click', () => setActiveDisplay('eur'));
+
+    function addDigit(d) {
+      const display = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
+      let val = display.value.replace(/[^\d.]/g, '');
+      if (val === '0') val = '';
+      val += d;
+      display.value = val + (activeDisplay === 'bgn' ? 'лв' : '€');
+      convert();
+    }
+
+    function addDecimal() {
+      const display = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
+      let val = display.value.replace(/[^\d.]/g, '');
+      if (!val.includes('.')) {
+        val += '.';
+        display.value = val + (activeDisplay === 'bgn' ? 'лв' : '€');
+        convert();
+      }
+    }
+
+    function deleteDigit() {
+      const display = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
+      let val = display.value.replace(/[^\d.]/g, '');
+      val = val.slice(0, -1);
+      display.value = (val || '') + (activeDisplay === 'bgn' ? 'лв' : '€');
+      convert();
+    }
+
+    function clearDisplays() {
+      bgnDisplay.value = 'лв';
+      eurDisplay.value = '€';
+    }
+
+    function convert() {
+      let from = activeDisplay === 'bgn' ? bgnDisplay : eurDisplay;
+      let to = activeDisplay === 'bgn' ? eurDisplay : bgnDisplay;
+      let val = parseFloat(from.value.replace(/[^\d.]/g, '')) || 0;
+      let converted = activeDisplay === 'bgn' ? (val / BGN_TO_EUR).toFixed(2) : (val * BGN_TO_EUR).toFixed(2);
+      to.value = converted + (activeDisplay === 'bgn' ? '€' : 'лв');
+    }
+
+    function setActiveDisplay(d) {
+      activeDisplay = d;
+      bgnDisplay.classList.toggle('active', d === 'bgn');
+      eurDisplay.classList.toggle('active', d === 'eur');
+      clearDisplays();
+    }
+
+    function toggleInfo() {
+      if (infoWindow.style.display === 'none' || infoWindow.style.display === '') {
+        infoWindow.style.display = 'block';
+        infoBtn.textContent = 'ЗАТВОРИ';
+        infoBtn.style.background = '#dc3545';
+        infoBtn.style.borderColor = '#c82333';
+        isInfoOpen = true;
+      } else {
+        infoWindow.style.display = 'none';
+        infoBtn.textContent = 'ИНФО';
+        infoBtn.style.background = '#28a745';
+        infoBtn.style.borderColor = '#1e7e34';
+        isInfoOpen = false;
+      }
+    }
+
+    infoBtn.addEventListener('click', toggleInfo);
+
+    document.addEventListener('click', (e) => {
+      if (e.target !== infoBtn && !infoWindow.contains(e.target) && e.target !== modeToggle) {
+        infoWindow.style.display = 'none';
+        infoBtn.textContent = 'ИНФО';
+        infoBtn.style.background = '#28a745';
+        infoBtn.style.borderColor = '#1e7e34';
+        isInfoOpen = false;
+      }
+    });
+
+    if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
+  </script>
+</body>
+</html>
