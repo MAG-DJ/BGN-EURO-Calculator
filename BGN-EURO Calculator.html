@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="icon" type="image/png" href="favicon.png">
   <title>ЛЕВА ⇄ ЕВРО Калкулатор</title>
-
   <style>
     :root {
       --bg-light: #f0f0f0;
@@ -229,11 +228,17 @@
       }
     });
 
-    // КОД ЗА БУТОНА СПОДЕЛИ
-    shareBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => alert('Линкът е копиран!'))
-        .catch(() => alert('Не можа да се копира.'));
+    // НОВ КОД ЗА БУТОНА СПОДЕЛИ С navigator.share
+    shareBtn.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({ url: 'https://mag-dj.github.io/BGN-EURO-Calc.-portal/' });
+        } catch (err) {
+          // потребителят е отказал споделянето, нищо не правим
+        }
+      } else {
+        alert('Функцията за споделяне не се поддържа на това устройство.');
+      }
     });
 
     // DARK MODE от LocalStorage
