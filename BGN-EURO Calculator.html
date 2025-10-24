@@ -29,7 +29,7 @@
     body.dark-mode .display { background: var(--display-bg); color: var(--display-text); border:none; }
     .display.active { outline:5px solid var(--danger); }
     .keypad { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; padding:10px 15px 40px; }
-    .btn { height:60px; font-size:28px; font-weight:bold; background:#333; color:#fff; border-radius:5px; border:none; cursor:pointer; transition:0.2s; }
+    .btn { height:60px; font-size:28px; font-weight:bold; background:#333; color:#fff; border-radius:5px; border:none; cursor:pointer; transition:0.2s; font-family:Arial, sans-serif; }
     body.dark-mode .btn { border:1px solid var(--btn-border-dark); }
     .btn:active { transform:scale(0.95); opacity:0.9; }
     .clear-btn { background: var(--danger); color:#fff; }
@@ -46,6 +46,9 @@
     .dark-mode #infoWindow::-webkit-scrollbar-thumb { background:#666; }
     .dark-mode #infoWindow::-webkit-scrollbar-thumb:hover { background:#888; }
     @media(max-width:480px) { html,body { height:100vh;margin:0;padding:0;overflow:hidden; } .calculator-container { position:fixed; top:5px; left:5px; width:calc(100vw - 10px); border-radius:8px; z-index:9999; margin-top:0; margin-left:0; margin-right:0; } #infoWindow { width:calc(100vw - 45px); left:15px; } }
+    #shareBtn { background-color:#28a745;color:white;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;margin-top:5px;font-family:Arial;font-weight:bold; }
+    #copyLinkBtn { background-color:#28a745;color:white;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;position:relative;margin-top:5px;font-family:Arial;font-weight:bold; }
+    #copyPopup { position:absolute; background:#333; color:white; padding:6px 10px; border-radius:6px; font-size:14px; display:none; top:50%; left:105%; transform:translateY(-50%); white-space:nowrap; z-index:1002; }
   </style>
 </head>
 <body>
@@ -89,7 +92,9 @@
         ✓ Ако въвеждате сума в левове и стотинки, въведете точка преди стотинките.<br>
         &nbsp;&nbsp;&nbsp;<strong>Пример:</strong> 25.45 лв → лева, точка, стотинки<br>
         &nbsp;&nbsp;&nbsp;<strong>Пример:</strong> 25.45 € → евро, точка, евроцентове<br><br>
-        ✓ Бутонът със стрелка изтрива последната въведена цифра.
+        ✓ Бутонът със стрелка изтрива последната въведена цифра.<br><br>
+        <strong>Ако желаете да споделите калкулатора с друг натиснете бутона СПОДЕЛИ.</strong><br>
+        <button id="shareBtn">СПОДЕЛИ</button>
       </div>
 
       <hr style="margin:12px 0;border:0.5px solid #ccc;">
@@ -105,9 +110,9 @@
           • <strong>Shift</strong> – Превключва между светъл и тъмен режим<br>
           • <strong>Enter</strong> – Отваря и затваря ИНФО бутон<br>
           • <strong>Точка <span style="font-size:16px;">(.)</span></strong> – Използва се преди въвеждане на стотинки или евроцентове<br>
-          • <p><strong>Калкулатора може да се управлява и с мишка</strong></p>
-          <p>Ако желаете да споделите калкулатора с друг натиснете бутона СПОДЕЛИ</p>
-          <button id="shareBtn" style="margin-top:10px;background-color:#28a745;color:white;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;">СПОДЕЛИ</button>
+          <p><strong>Калкулатора може да се управлява и с мишка</strong></p>
+          <p><strong>Ако желаете да споделите калкулатора с друг, натиснете бутона Copy link</strong></p>
+          <button id="copyLinkBtn">Copy link<span id="copyPopup">Линкът е копиран!</span></button>
         </div>
       </div>
     </div>
@@ -128,6 +133,8 @@
     const infoBtn = document.getElementById('infoBtn');
     const infoWindow = document.getElementById('infoWindow');
     const shareBtn = document.getElementById('shareBtn');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const copyPopup = document.getElementById('copyPopup');
 
     closeBtn.addEventListener('click', () => window.close());
     
@@ -228,21 +235,23 @@
       }
     });
 
-    // НОВ КОД ЗА БУТОНА СПОДЕЛИ С navigator.share
     shareBtn.addEventListener('click', async () => {
       if (navigator.share) {
         try {
           await navigator.share({ url: 'https://mag-dj.github.io/BGN-EURO-Calc.-portal/' });
-        } catch (err) {
-          // потребителят е отказал споделянето, нищо не правим
-        }
+        } catch (err) {}
       } else {
         alert('Функцията за споделяне не се поддържа на това устройство.');
       }
     });
 
-    // DARK MODE от LocalStorage
-    if(localStorage.getItem('darkMode')==='true') toggleDarkMode();
+    copyLinkBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText('https://mag-dj.github.io/BGN-EURO-Calc.-portal/').then(()=>{
+        copyPopup.style.display='block';
+        setTimeout(()=>{copyPopup.style.display='none';},3000);
+      });
+    });
+
   </script>
 </body>
 </html>
