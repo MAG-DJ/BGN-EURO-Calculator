@@ -12,18 +12,42 @@
 <body>
 <div class="watermark">MAG-DJ®</div>
 <div class="calculator-container">
-<div class="header"><button class="close-btn">×</button><div class="title">ЛЕВА ⇄ ЕВРО Калкулатор</div><button class="mode-toggle" id="modeToggle">☀️</button></div><div class="displays"><input type="text" class="display active" id="bgnDisplay" value="лв" readonly><input type="text" class="display" id="eurDisplay" value="€" readonly></div><div class="keypad"><button class="btn" onclick="a('1')">1</button><button class="btn" onclick="a('2')">2</button><button class="btn" onclick="a('3')">3</button><button class="btn" onclick="a('4')">4</button><button class="btn" onclick="a('5')">5</button><button class="btn" onclick="a('6')">6</button><button class="btn" onclick="a('7')">7</button><button class="btn" onclick="a('8')">8</button><button class="btn" onclick="a('9')">9</button><button class="btn clear-btn" onclick="d()">⌫</button><button class="btn" onclick="a('0')">0</button><button class="btn" onclick="b()">.</button></div><button id="infoBtn">ИНФО</button><div id="infoWindow"><div style="text-align:center;font-weight:700;margin-bottom:12px;font-size:18px">УПЪТВАНЕ</div><div style="margin-bottom:10px;font-size:16px;line-height:1.3">✓ Изберете светъл 🌞 или тъмен 🌙 режим от бутона вдясно над горния дисплей.<br>✓ Изберете левов или евров дисплей.<br>✓ Активен е този дисплей, чиято рамка (периферия) е оцветена в червено.<br>✓ При избор на дисплей калкулаторът се нулира.<br>✓ Въведете сумата – изчисляването става автоматично.<br>✓ Ако въвеждате сума в левове и стотинки, въведете точка преди стотинките.<br>&nbsp;&nbsp;<strong>Пример:</strong> 25.45 лв → лева, точка, стотинки<br>&nbsp;&nbsp;<strong>Пример:</strong> 25.45 € → евро, точка, евроцентове<br>✓ Бутонът със стрелка изтрива последната въведена цифра.<br></div><div style="margin-bottom:10px;font-size:16px">Ако желаете да споделите калкулатора с друг, натиснете бутона<br><button id="shareBtn">СПОДЕЛИ</button></div><hr style="margin:12px 0;border:.5px solid #ccc"><div style="text-align:center;font-size:16px"><div style="font-weight:700;font-size:16px">💻 Компютър</div><div style="font-weight:700;margin-bottom:8px;font-size:15px">Клавишни комбинации</div><div style="font-size:16px;text-align:left;line-height:1.6">• <strong>Цифри 0–9</strong> – Въвеждат сумата<br>• <strong>Backspace</strong> – Изтрива последната въведена цифра<br>• <strong>∧  ∨</strong> – Сменят/избират дисплей – лв или € и нулират калкулатора<br>• <strong>Esc</strong> – Затваря калкулатора<br>• <strong>Shift</strong> – Превключва между светъл и тъмен режим<br>• <strong>Enter</strong> – Отваря и затваря ИНФО бутон<br>• <strong>Точка <span style="font-size:16px">(.)</span></strong> – Използва се преди въвеждане на стотинки или евроцентове<br><p><strong>Калкулатора може да се управлява и с мишка</strong></p><p style="margin-top:10px">Ако желаете да споделите калкулатора с друг, натиснете бутона<br><button id="copyLinkBtn">Copy link<span id="copyPopup">Линкът е копиран!</span></button></p></div></div></div><div class="footer">MAG-DJ®</div>
+<div class="header">
+    <!-- БУТОН (X) - ЩЕ СЕ ПРЕМАХНЕ АВТОМАТИЧНО ЗА ТЕЛЕФОНИ -->
+    <button class="close-btn">×</button>
+    <div class="title">ЛЕВА ⇄ ЕВРО Калкулатор</div>
+    <button class="mode-toggle" id="modeToggle">☀️</button>
+</div>
+<div class="displays"><input type="text" class="display active" id="bgnDisplay" value="лв" readonly><input type="text" class="display" id="eurDisplay" value="€" readonly></div>
+<div class="keypad"><button class="btn" onclick="a('1')">1</button><button class="btn" onclick="a('2')">2</button><button class="btn" onclick="a('3')">3</button><button class="btn" onclick="a('4')">4</button><button class="btn" onclick="a('5')">5</button><button class="btn" onclick="a('6')">6</button><button class="btn" onclick="a('7')">7</button><button class="btn" onclick="a('8')">8</button><button class="btn" onclick="a('9')">9</button><button class="btn clear-btn" onclick="d()">⌫</button><button class="btn" onclick="a('0')">0</button><button class="btn" onclick="b()">.</button></div>
+<button id="infoBtn">ИНФО</button>
+<div id="infoWindow"><div style="text-align:center;font-weight:700;margin-bottom:12px;font-size:18px">УПЪТВАНЕ</div><div style="margin-bottom:10px;font-size:16px;line-height:1.3">✓ Изберете светъл 🌞 или тъмен 🌙 режим от бутона вдясно над горния дисплей.<br>✓ Изберете левов или евров дисплей.<br>✓ Активен е този дисплей, чиято рамка (периферия) е оцветена в червено.<br>✓ При избор на дисплей калкулаторът се нулира.<br>✓ Въведете сумата – изчисляването става автоматично.<br>✓ Ако въвеждате сума в левове и стотинки, въведете точка преди стотинките.<br>&nbsp;&nbsp;<strong>Пример:</strong> 25.45 лв → лева, точка, стотинки<br>&nbsp;&nbsp;<strong>Пример:</strong> 25.45 € → евро, точка, евроцентове<br>✓ Бутонът със стрелка изтрива последната въведена цифра.<br></div><div style="margin-bottom:10px;font-size:16px">Ако желаете да споделите калкулатора с друг, натиснете бутона<br><button id="shareBtn">СПОДЕЛИ</button></div><hr style="margin:12px 0;border:.5px solid #ccc"><div style="text-align:center;font-size:16px"><div style="font-weight:700;font-size:16px">💻 Компютър</div><div style="font-weight:700;margin-bottom:8px;font-size:15px">Клавишни комбинации</div><div style="font-size:16px;text-align:left;line-height:1.6">• <strong>Цифри 0–9</strong> – Въвеждат сумата<br>• <strong>Backspace</strong> – Изтрива последната въведена цифра<br>• <strong>∧  ∨</strong> – Сменят/избират дисплей – лв или € и нулират калкулатора<br>• <strong>Esc</strong> – Затваря калкулатора<br>• <strong>Shift</strong> – Превключва между светъл и тъмен режим<br>• <strong>Enter</strong> – Отваря и затваря ИНФО бутон<br>• <strong>Точка <span style="font-size:16px">(.)</span></strong> – Използва се преди въвеждане на стотинки или евроцентове<br><p><strong>Калкулатора може да се управлява и с мишка</strong></p><p style="margin-top:10px">Ако желаете да споделите калкулатора с друг, натиснете бутона<br><button id="copyLinkBtn">Copy link<span id="copyPopup">Линкът е копиран!</span></button></p></div></div></div><div class="footer">MAG-DJ®</div>
 </div>
 
 <script>
 // ОСНОВНИ ФУНКЦИИ НА КАЛКУЛАТОРА
-const BGN_TO_EUR=1.95583;let c='bgn',f=!1,g=!1,h=document.getElementById('bgnDisplay'),i=document.getElementById('eurDisplay'),j=document.getElementById('modeToggle'),k=document.querySelector('.close-btn'),l=document.getElementById('infoBtn'),m=document.getElementById('infoWindow'),n=document.getElementById('shareBtn'),o=document.getElementById('copyLinkBtn'),p=document.getElementById('copyPopup');function q(){document.body.classList.toggle('dark-mode');f=document.body.classList.contains('dark-mode');j.textContent=f?'🌙':'☀️'}function a(d){const e=c==='bgn'?h:i;let b=e.value.replace(/[^\d.]/g,'');b==='0'&&(b='');b+=d;e.value=b+(c==='bgn'?'лв':'€');r()}function b(){const d=c==='bgn'?h:i;let e=d.value.replace(/[^\d.]/g,'');e.includes('.')||(e+='.',d.value=e+(c==='bgn'?'лв':'€'),r())}function d(){const e=c==='bgn'?h:i;let b=e.value.replace(/[^\d.]/g,'');b=b.slice(0,-1);e.value=(b||'')+(c==='bgn'?'лв':'€');r()}function s(){h.value='лв';i.value='€'}function r(){let d=c==='bgn'?h:i,e=c==='bgn'?i:h,b=parseFloat(d.value.replace(/[^\d.]/g,''))||0,f=c==='bgn'?(b/BGN_TO_EUR).toFixed(2):(b*BGN_TO_EUR).toFixed(2);e.value=f+(c==='bgn'?'€':'лв')}function t(d){c=d;h.classList.toggle('active',d==='bgn');i.classList.toggle('active',d==='eur');s()}function u(){if(m.style.display==='none'||m.style.display===''){m.style.display='block';m.scrollTop=0;l.textContent='ЗАТВОРИ';l.style.background='#dc3545';l.style.borderColor='#c82333';g=!0}else{m.style.display='none';l.textContent='ИНФО';l.style.background='#28a745';l.style.borderColor='#1e7e34';g=!1}}k.addEventListener('click',()=>window.close());j.addEventListener('click',function(d){d.stopPropagation();q()});document.addEventListener('keydown',d=>{if(g){if(d.key==='ArrowUp'){m.scrollBy(0,-30);d.preventDefault();return}if(d.key==='ArrowDown'){m.scrollBy(0,30);d.preventDefault();return}}if(d.key>='0'&&d.key<='9')a(d.key);else if(d.key==='.'||d.key===',')b();else if(d.key==='Backspace')d();else if(d.key==='Enter'){u();d.preventDefault()}else if(d.key==='ArrowUp')t('bgn');else if(d.key==='ArrowDown')t('eur');else if(d.key==='Escape')window.close();else if(d.key==='Shift')q()});h.addEventListener('click',()=>t('bgn'));i.addEventListener('click',()=>t('eur'));l.addEventListener('click',u);document.addEventListener('click',d=>{d.target!==l&&!m.contains(d.target)&&d.target!==j&&(m.style.display='none',l.textContent='ИНФО',l.style.background='#28a745',l.style.borderColor='#1e7e34',g=!1)});n.addEventListener('click',async()=>{navigator.share?await navigator.share({url:'https://mag-dj.github.io/BGN-EURO-Calc.-portal/'}):alert('Функцията за споделяне не се поддържа на това устройство.')});
+const BGN_TO_EUR=1.95583;let c='bgn',f=!1,g=!1,h=document.getElementById('bgnDisplay'),i=document.getElementById('eurDisplay'),j=document.getElementById('modeToggle'),k=document.querySelector('.close-btn'),l=document.getElementById('infoBtn'),m=document.getElementById('infoWindow'),n=document.getElementById('shareBtn'),o=document.getElementById('copyLinkBtn'),p=document.getElementById('copyPopup');function q(){document.body.classList.toggle('dark-mode');f=document.body.classList.contains('dark-mode');j.textContent=f?'🌙':'☀️'}function a(d){const e=c==='bgn'?h:i;let b=e.value.replace(/[^\d.]/g,'');b==='0'&&(b='');b+=d;e.value=b+(c==='bgn'?'лв':'€');r()}function b(){const d=c==='bgn'?h:i;let e=d.value.replace(/[^\d.]/g,'');e.includes('.')||(e+='.',d.value=e+(c==='bgn'?'лв':'€'),r())}function d(){const e=c==='bgn'?h:i;let b=e.value.replace(/[^\d.]/g,'');b=b.slice(0,-1);e.value=(b||'')+(c==='bgn'?'лв':'€');r()}function s(){h.value='лв';i.value='€'}function r(){let d=c==='bgn'?h:i,e=c==='bgn'?i:h,b=parseFloat(d.value.replace(/[^\d.]/g,''))||0,f=c==='bgn'?(b/BGN_TO_EUR).toFixed(2):(b*BGN_TO_EUR).toFixed(2);e.value=f+(c==='bgn'?'€':'лв')}function t(d){c=d;h.classList.toggle('active',d==='bgn');i.classList.toggle('active',d==='eur');s()}function u(){if(m.style.display==='none'||m.style.display===''){m.style.display='block';m.scrollTop=0;l.textContent='ЗАТВОРИ';l.style.background='#dc3545';l.style.borderColor='#c82333';g=!0}else{m.style.display='none';l.textContent='ИНФО';l.style.background='#28a745';l.style.borderColor='#1e7e34';g=!1}}
 
-// 🟢 ПОПРАВЕНО КОПИРАНЕ БЕЗ ЗАДЕЙСТВАНЕ НА ЗАЩИТАТА
+// 🔧 АВТОМАТИЧНО ПРЕМАХВАНЕ НА БУТОН (X) ЗА ТЕЛЕФОНИ
+if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    k.remove();
+}
+
+// 🔧 BACKSPACE КЛАВИШ - ПРАВИЛНА СИНХРОНИЗАЦИЯ
+function handleBackspace() {
+    const e = c === 'bgn' ? h : i;
+    let b = e.value.replace(/[^\d.]/g, '');
+    b = b.slice(0, -1);
+    e.value = (b || '') + (c === 'bgn' ? 'лв' : '€');
+    r();
+}
+
+k.addEventListener('click',()=>window.close());j.addEventListener('click',function(d){d.stopPropagation();q()});document.addEventListener('keydown',d=>{if(g){if(d.key==='ArrowUp'){m.scrollBy(0,-30);d.preventDefault();return}if(d.key==='ArrowDown'){m.scrollBy(0,30);d.preventDefault();return}}if(d.key>='0'&&d.key<='9')a(d.key);else if(d.key==='.'||d.key===',')b();else if(d.key==='Backspace'){handleBackspace();d.preventDefault();}else if(d.key==='Enter'){u();d.preventDefault()}else if(d.key==='ArrowUp')t('bgn');else if(d.key==='ArrowDown')t('eur');else if(d.key==='Escape'){if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {window.close();}}else if(d.key==='Shift')q()});h.addEventListener('click',()=>t('bgn'));i.addEventListener('click',()=>t('eur'));l.addEventListener('click',u);document.addEventListener('click',d=>{d.target!==l&&!m.contains(d.target)&&d.target!==j&&(m.style.display='none',l.textContent='ИНФО',l.style.background='#28a745',l.style.borderColor='#1e7e34',g=!1)});n.addEventListener('click',async()=>{navigator.share?await navigator.share({url:'https://mag-dj.github.io/BGN-EURO-Calc.-portal/'}):alert('Функцията за споделяне не се поддържа на това устройство.')});
+
+// 🟢 РАБОТЕЩО КОПИРАНЕ
 o.addEventListener('click', () => {
     const url = 'https://mag-dj.github.io/BGN-EURO-Calc.-portal/';
     
-    // Временно премахваме защитата за копиране
     const copyHandler = function(e) {
         e.stopImmediatePropagation();
         e.preventDefault();
@@ -32,25 +56,21 @@ o.addEventListener('click', () => {
     
     document.addEventListener('copy', copyHandler, true);
     
-    // Опит за копиране с Clipboard API
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(() => {
             p.classList.add('show');
             setTimeout(() => { p.classList.remove('show'); }, 1500);
             document.removeEventListener('copy', copyHandler, true);
         }).catch(() => {
-            // Резервен метод
             fallbackCopy(url);
             document.removeEventListener('copy', copyHandler, true);
         });
     } else {
-        // Резервен метод
         fallbackCopy(url);
         document.removeEventListener('copy', copyHandler, true);
     }
 });
 
-// Резервна функция за копиране
 function fallbackCopy(url) {
     const textArea = document.createElement("textarea");
     textArea.value = url;
@@ -72,7 +92,7 @@ function fallbackCopy(url) {
     document.body.removeChild(textArea);
 }
 
-// 🔐 ЗАЩИТИ - АКТИВИРАТ СЕ СЛЕД ЗАРЕЖДАНЕ
+// 🔐 ЗАЩИТИ
 window.addEventListener('load', function() {
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
