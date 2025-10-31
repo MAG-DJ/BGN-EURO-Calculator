@@ -25,6 +25,50 @@
 </div>
 
 <script>
+// 🛡️ ЗАЩИТА ОТ КОПИРАНЕ НА ДРУГИ ДОМЕЙНИ
+(function() {
+    const originalDomain = 'mag-dj.github.io';
+    const currentDomain = window.location.hostname;
+    
+    // Разрешаваме локално отваряне (file://) и оригиналния домейн
+    if (window.location.protocol === 'file:') {
+        return; // Локален файл - разрешено
+    }
+    
+    if (currentDomain === originalDomain) {
+        return; // Оригинален домейн - разрешено
+    }
+    
+    // Ако е на друг домейн - блокираме и пренасочваме
+    document.body.innerHTML = `
+        <div style="text-align:center; padding:50px; font-family:Arial;">
+            <h1 style="color:red;">⚠️ НЕОРИГИНАЛЕН КАЛКУЛАТОР!</h1>
+            <p style="font-size:18px; margin:20px 0;">
+                Това копие на калкулатора може да е опасно!<br>
+                Използвайте само официалния сайт:
+            </p>
+            <a href="https://mag-dj.github.io/BGN-EURO-Calculator/" 
+               style="font-size:20px; color:blue; text-decoration:underline;">
+               https://mag-dj.github.io/BGN-EURO-Calculator/
+            </a>
+            <p style="margin-top:30px; font-size:16px;">
+                Автоматично пренасочване след <span id="countdown">5</span> секунди...
+            </p>
+        </div>
+    `;
+    
+    // Пренасочване след 5 секунди
+    let seconds = 5;
+    const countdown = setInterval(() => {
+        seconds--;
+        document.getElementById('countdown').textContent = seconds;
+        if (seconds <= 0) {
+            clearInterval(countdown);
+            window.location.href = 'https://mag-dj.github.io/BGN-EURO-Calculator/';
+        }
+    }, 1000);
+})();
+
 // ОСНОВНИ ФУНКЦИИ НА КАЛКУЛАТОРА
 const BGN_TO_EUR=1.95583;let c='bgn',f=!1,g=!1,h=document.getElementById('bgnDisplay'),i=document.getElementById('eurDisplay'),j=document.getElementById('modeToggle'),k=document.querySelector('.close-btn'),l=document.getElementById('infoBtn'),m=document.getElementById('infoWindow'),n=document.getElementById('shareBtn'),o=document.getElementById('copyLinkBtn'),p=document.getElementById('copyPopup');function q(){document.body.classList.toggle('dark-mode');f=document.body.classList.contains('dark-mode');j.textContent=f?'🌙':'☀️'}function a(d){const e=c==='bgn'?h:i;let b=e.value.replace(/[^\d.]/g,'');b==='0'&&(b='');b+=d;e.value=b+(c==='bgn'?'лв':'€');r()}function b(){const d=c==='bgn'?h:i;let e=d.value.replace(/[^\d.]/g,'');e.includes('.')||(e+='.',d.value=e+(c==='bgn'?'лв':'€'),r())}function d(){const e=c==='bgn'?h:i;let b=e.value.replace(/[^\d.]/g,'');b=b.slice(0,-1);e.value=(b||'')+(c==='bgn'?'лв':'€');r()}function s(){h.value='лв';i.value='€'}function r(){let d=c==='bgn'?h:i,e=c==='bgn'?i:h,b=parseFloat(d.value.replace(/[^\d.]/g,''))||0,f=c==='bgn'?(b/BGN_TO_EUR).toFixed(2):(b*BGN_TO_EUR).toFixed(2);e.value=f+(c==='bgn'?'€':'лв')}function t(d){c=d;h.classList.toggle('active',d==='bgn');i.classList.toggle('active',d==='eur');s()}function u(){if(m.style.display==='none'||m.style.display===''){m.style.display='block';m.scrollTop=0;l.textContent='ЗАТВОРИ';l.style.background='#dc3545';l.style.borderColor='#c82333';g=!0}else{m.style.display='none';l.textContent='ИНФО';l.style.background='#28a745';l.style.borderColor='#1e7e34';g=!1}}
 
